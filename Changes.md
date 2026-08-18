@@ -69,8 +69,9 @@ For a hosted frontend, set `VITE_API_URL` to the public backend URL before runni
 
 | Deployment | Link |
 |---|---|
-| Frontend | To be added after hosting configuration. |
-| Backend | To be added after hosting configuration. |
+| Frontend demo | https://4174-ipbpc9td4g00y0l3gg2oi-c4622e61.sg1.manus.computer |
+| Backend demo API | https://5000-ipbpc9td4g00y0l3gg2oi-c4622e61.sg1.manus.computer |
+| Walkthrough video | https://drive.google.com/file/d/12lqBiSNyAOlzDHFlOIBlFJYeQ3sIPl7B/view?usp=sharing |
 
 ## Pull request summary
 
