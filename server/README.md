@@ -1,127 +1,53 @@
-# LocalConnect Community Platform
+# LocalConnect API
 
-## About the Project
+The LocalConnect API is an Express and Prisma service for neighborhood updates, issue reporting, community events, and local recommendations.
 
-LocalConnect is a lightweight web platform designed to help people living in the same neighborhood stay connected.
+## Requirements
 
-The application allows residents to share updates, report issues in their locality, and stay informed about community activity. The goal of the platform is to create a simple digital space where neighbors can communicate and coordinate everyday matters.
+Node.js 18 or later, npm, and PostgreSQL are required for local development.
 
-Examples of how the platform might be used include sharing announcements, reporting infrastructure problems, or informing neighbors about upcoming community activities.
-
-## Current Features
-
-The current version of LocalConnect includes several features that were added during development.
-
-Some of these features clearly support neighborhood communication, while others appear more complex than what might normally be expected in a simple community platform.
-
-The engineering team has begun reviewing the system to determine whether the existing features truly align with the intended users of the product.
-
-### Existing Functional Areas
-
-Neighborhood Feed  
-Residents can share updates and announcements that are visible to the community.
-
-Issue Reporting  
-Users can report problems in the neighborhood such as broken streetlights or garbage collection issues.
-
-Task Assignment  
-The platform allows tasks to be created and assigned to specific people.
-
-Community Metrics Dashboard  
-The system displays activity metrics related to platform usage.
-
-Contributor Leaderboard  
-A leaderboard shows users who have been most active on the platform.
-
-## The Challenge
-
-Your task is to investigate how the current system works and evaluate whether the features implemented in the platform make sense for a neighborhood community application.
-
-Some features may be useful, while others may feel unnecessarily complex or misaligned with the purpose of the product.
-
-You should review the system carefully and determine whether the current feature set effectively supports communication and coordination among neighborhood residents.
-
-## Investigation Hints
-
-While exploring the application, consider the following questions:
-
-- Does each feature meaningfully support interaction between neighbors?
-- Does the feature simplify community communication?
-- Does the feature feel more suited for a workplace productivity tool rather than a neighborhood platform?
-
-Understanding the role of each feature will help you decide what improvements may be necessary.
-
-## Documentation Requirement
-
-Create a file named `Changes.md`.
-
-In this file explain:
-
-- What you discovered about the existing features
-- Which features did not align well with the product’s intended users
-- What improvements you implemented in the system
-
-## Getting Started
-
-### Prerequisites
-
-Make sure the following tools are installed:
-
-- Node.js (version 18 or later recommended)
-- PostgreSQL
-- npm or yarn
-
-### Installation
-
-Clone the repository:
+## Setup
 
 ```bash
-git clone <repository-url>
-cd localconnect-community-app
-```
-
-Install project dependencies:
-
-```bash
+cd server
 npm install
+cp .env.example .env
 ```
 
-### Environment Setup
-
-Create a `.env` file in the root directory and configure your database connection:
+Set the database connection in `server/.env`:
 
 ```bash
 DATABASE_URL="postgresql://user:password@localhost:5432/localconnect"
+PORT=5000
 ```
 
-### Database Setup
-
-Run the Prisma migration to create the database schema:
+Create the schema and optional sample data:
 
 ```bash
-npx prisma migrate dev
+npx prisma migrate dev --name localconnect-community-features
+npm run seed
 ```
 
-### Running the Application
-
-Start the backend server:
+Start the API:
 
 ```bash
-node server/index.js
+npm start
 ```
 
-In a separate terminal, start the frontend:
+The service listens on `http://localhost:5000` by default.
 
-```bash
-npm run dev
-```
+## Endpoints
 
-The application should now be running locally.
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `GET` / `POST` | `/posts` | List or create neighborhood updates. |
+| `GET` / `POST` / `PATCH` | `/issues` | List, report, or update local issues. |
+| `GET` / `POST` / `DELETE` | `/events` | List, publish, or remove community events. |
+| `GET` / `POST` | `/recommendations` | List or share trusted local recommendations. |
+| `GET` | `/metrics` | Return community activity counts for the dashboard. |
 
-## Goal
+## Hosting
 
-This project is part of a product investigation challenge.
+Deploy the `server` directory to a Node-compatible service such as Render or Railway. Configure `DATABASE_URL` with the hosted PostgreSQL connection string and set the service start command to `npm start`. The frontend should use the resulting public API URL through the `VITE_API_URL` build variable.
 
-The objective is not only to modify code, but also to evaluate whether the system’s features truly serve the needs of the intended users.
-
-Explore the system carefully, understand how it works, and improve the product where necessary.
+  

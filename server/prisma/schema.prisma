@@ -20,10 +20,19 @@ model Issue {
   createdAt   DateTime @default(now())
 }
 
-model Task {
+model Event {
   id          Int      @id @default(autoincrement())
   title       String
-  assignedTo  String
-  status      String   @default("PENDING")
+  description String
+  location    String
+  eventDate   DateTime
+  createdAt   DateTime @default(now())
+}
+
+model Recommendation {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    String
+  description String
   createdAt   DateTime @default(now())
 }

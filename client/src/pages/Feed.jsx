@@ -1,31 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
-import { getPosts, createPost } from '../services/api';
+import { createPost, getPosts } from '../services/api';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [content, setContent] = useState('');
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
-    try {
-      const { data } = await getPosts();
-      setPosts(data);
-    } catch (error) {
-      console.error(error);
-    }
+  const refreshPosts = async () => {
+    const { data } = await getPosts();
+    setPosts(data);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    let active = true;
+    getPosts()
+      .then(({ data }) => {
+        if (active) setPosts(data);
+      })
+      .catch((error) => console.error(error));
+    return () => { active = false; };
+  }, []);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     if (!content.trim()) return;
     try {
       await createPost(content);
       setContent('');
-      fetchPosts();
+      await refreshPosts();
     } catch (error) {
       console.error(error);
     }
@@ -37,24 +39,18 @@ const Feed = () => {
       <div className="card">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <textarea 
-              className="input-field" 
-              placeholder="What's happening in the neighborhood?"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              rows="3"
-            />
+            <textarea className="input-field" placeholder="What's happening in the neighborhood?" value={content} onChange={(event) => setContent(event.target.value)} rows="3" />
           </div>
-          <button type="submit" className="btn-primary">Post Update</button>
+          <button type="submit" className="btn-primary">Post update</button>
         </form>
       </div>
       <div>
-        {posts.map(post => (
-          <PostCard key={post.id} post={post} />
-        ))}
+        {posts.map((post) => <PostCard key={post.id} post={post} />)}
       </div>
     </div>
   );
 };
 
 export default Feed;
+
+  
